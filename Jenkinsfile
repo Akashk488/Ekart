@@ -98,8 +98,8 @@ pipeline{
 
             stage('Kubernate deploy'){
                 steps{
-                    withKubeConfig(caCertificate: '', clusterName: '', contextName: '', credentialsId: 'k8-token', namespace: 'webapps', restrictKubeConfigAccess: false, serverUrl: 'https://172.31.82.58:6443') {
-                         sh 'kubectl apply -f deploymentservice.yaml -n webapps'
+                    withKubeConfig(caCertificate: '', clusterName: '', contextName: '', credentialsId: 'k8-token', namespace: 'webapps', restrictKubeConfigAccess: false, serverUrl: 'https://my-aks-dns-8hy1pb85.hcp.eastus2.azmk8s.io:443') {
+                         sh 'kubectl apply -f deploymentservice.yml -n webapps'
                          sh 'kubectl get svc -n webapps'   
                         }
                 }
