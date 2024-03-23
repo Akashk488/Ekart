@@ -66,6 +66,45 @@ pipeline{
                 }
 
             }
+
+            stage('Build docker image'){
+                steps{
+                    script {
+                        withDockerRegistry(credentialsId: 'docker-cred', toolName: 'docker') {
+                            sh 'docker build -t akash488/ekart:latest -f docker/Dockerfile .'
+                        }
+                    }
+                }
+
+            }
+
+            stage('Trivy Scan'){
+                steps{
+                    sh 'trivy image akash488/ekart:latest > trivy-report.txt'
+                }
+
+            }
+
+            stage('Build docker image push'){
+                steps{
+                    script {
+                        withDockerRegistry(credentialsId: 'docker-cred', toolName: 'docker') {
+                            sh 'docker push akash488/ekart:latest'
+                        }
+                    }
+                }
+
+            }
+
+            stage('Kubernate deploy'){
+                steps{
+                    withKubeConfig(caCertificate: '', clusterName: '', contextName: '', credentialsId: 'k8-token', namespace: 'webapps', restrictKubeConfigAccess: false, serverUrl: 'https://172.31.82.58:6443') {
+                         sh 'kubectl apply -f deploymentservice.yml -n webapps'
+                         sh 'kubectl get svc -n webapps'   
+                        }
+                }
+
+            }
             
         }
 }
