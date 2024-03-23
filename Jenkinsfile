@@ -7,7 +7,7 @@ pipeline{
     }
 
     environment {
-        SCANNER_HOME= tool 'sonarqube-sacanner'
+        SCANNER_HOME= tool 'sonar-scanner'
     }
 
         stages{
@@ -35,7 +35,7 @@ pipeline{
             stage('Sonarqube Analysis'){
                 steps{
                     withSonarQubeEnv('sonarqube') { // in setting we confire sonar server
-                        sh ''' $SCANNER_HOME/bin/sonarqube-sacanner -Dsonar.projectKey=EKART -Dsonar.projectName=EKART -Dsonar.java.binaries=. '''
+                        sh ''' $SCANNER_HOME/bin/sonar-scanner -Dsonar.projectKey=EKART -Dsonar.projectName=EKART -Dsonar.java.binaries=. '''
             
 
                     } 
