@@ -42,5 +42,30 @@ pipeline{
                 }
 
             }
+
+            stage('OWASP Dependency check'){
+                steps{
+                    dependencyCheck additionalArguments: ' --scan ./', odcInstallation: 'Dc' //--scan ./ check depency of pom file
+                    dependencyCheckPublisher pattern: '**/dependency-check-report.xml'
+                }
+
+            }
+
+            stage('Build'){
+                steps{
+                    sh 'mvn package -DskipTests=true' //build a artificate but wont test
+                }
+
+            }
+
+            stage('Deploy to Nexus'){
+                steps{
+                    withMaven(globalMavenSettingsConfig: 'global-maven', jdk: 'jdk17', maven: 'maven', mavenSettingsConfig: '', traceability: true) {
+                    sh 'mvn deploy -DskipTests=true'
+                    }
+                }
+
+            }
+            
         }
 }
