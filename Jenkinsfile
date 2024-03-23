@@ -13,7 +13,7 @@ pipeline{
         stages{
             stage('Git Checkout'){
                 steps{
-                    checkout scm 
+                    sh 'checkout scm' 
                 }
 
             }
@@ -34,7 +34,7 @@ pipeline{
 
             stage('Sonarqube Analysis'){
                 steps{
-                    withSonarQubeEnv('sonar') { // in setting we confire sonar server
+                    withSonarQubeEnv('sonarqube') { // in setting we confire sonar server
                         sh '''$SCANNER_HOME/bin/sonarqube-sacanner -Dsonar.projectKey=EKART -Dsonar.projectName=EKART \
                         -Dsonar.java.binaries=. '''
                         
