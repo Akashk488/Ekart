@@ -27,7 +27,7 @@ pipeline{
 
             stage('Unit Test'){
                 steps{
-                    sh 'mvn test -DskipTest=true' //skip the test cases in case fail
+                    sh 'mvn test -DskipTests=true' //skip the test cases in case fail
                 }
 
             }
